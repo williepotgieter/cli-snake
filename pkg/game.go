@@ -69,5 +69,25 @@ func (s *SnakeGame) CheckGameOver() {
 		fmt.Println("GAME OVER!")
 		fmt.Println("Score: ", s.Score)
 		os.Remove("./gamestate.json")
+		return
 	}
+}
+
+// CheckFoundFood checks whether the snake has found food and adds length to the snake
+func (s *SnakeGame) CheckFoundFood() error {
+	if s.BoardInfo.Snake.Body[0] == s.BoardInfo.FoodPos {
+		s.BoardInfo.Snake.Body = append([]Position{s.BoardInfo.FoodPos}, s.BoardInfo.Snake.Body...)
+		s.SetSnake()
+		s.BoardInfo.FoodPos = Position{
+			Row:    realRandom(s.BoardInfo.Size.Rows),
+			Column: realRandom(s.BoardInfo.Size.Columns),
+		}
+		// TODO - Check whether food position falls on snake body
+		s.Score++
+		if err := s.SetGameState(); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
