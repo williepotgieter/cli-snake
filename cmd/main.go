@@ -44,7 +44,7 @@ func main() {
 				if err != nil {
 					return err
 				}
-				fmt.Println("Saved game: ", sg)
+				fmt.Println("Saved game: ", *sg)
 				return nil
 			},
 		},

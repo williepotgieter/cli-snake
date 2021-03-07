@@ -11,5 +11,8 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
+# Game data file
+/data
+
 # Dependency directories (remove the comment below to include it)
 # vendor/
