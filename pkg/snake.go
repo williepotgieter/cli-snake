@@ -22,8 +22,7 @@ type Position struct {
 
 // Snake type stores details about the current snake
 type Snake struct {
-	Body   []Position
-	Length int
+	Body []Position
 }
 
 // SnakeGame to store state of snake game

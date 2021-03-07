@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -44,7 +43,8 @@ func main() {
 				if err != nil {
 					return err
 				}
-				fmt.Println("Saved game: ", *sg)
+				//fmt.Println("Saved game: ", *sg)
+				sg.RenderBoard()
 				return nil
 			},
 		},

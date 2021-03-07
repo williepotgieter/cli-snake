@@ -24,14 +24,6 @@ func CreateBoard(c *cli.Context) (BoardInfo, error) {
 		b[i] = make([]string, bs.Columns)
 	}
 
-	b[2][5] = "T"
-
-	// for i := 0; i < len(b); i++ {
-	// 	for j := 0; j < len(b[0]); j++ {
-	// 		b[i][j] = ""
-	// 	}
-	// }
-
 	// Generate random food position
 	fp := Position{
 		Row:    r1.Intn(bs.Rows),
@@ -53,8 +45,7 @@ func CreateBoard(c *cli.Context) (BoardInfo, error) {
 	}
 
 	sn := Snake{
-		Body:   []Position{sh},
-		Length: 1,
+		Body: []Position{sh},
 	}
 
 	return BoardInfo{

@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -14,9 +13,7 @@ func (s *SnakeGame) SetGameState() error {
 		return err
 	}
 
-	ioutil.WriteFile("data/gamestate.json", jsonStr, os.ModePerm)
-
-	fmt.Println(os.Getenv("CLISNAKE_GAME"))
+	ioutil.WriteFile("gamestate.json", jsonStr, os.ModePerm)
 
 	return nil
 }
@@ -25,7 +22,7 @@ func (s *SnakeGame) SetGameState() error {
 func GetGameState() (*SnakeGame, error) {
 	var sg SnakeGame
 
-	file, err := ioutil.ReadFile("data/gamestate.json")
+	file, err := ioutil.ReadFile("gamestate.json")
 	if err != nil {
 		return &SnakeGame{}, err
 	}

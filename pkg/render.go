@@ -4,31 +4,22 @@ import "fmt"
 
 // RenderBoard renders a snake board in the command line
 func (s *SnakeGame) RenderBoard() {
-	var sb = [10][10]string{
-		{"", "", "", "", "", "", "", "", "", ""},
-		{"", "", "", "", "", "", "", "", "", ""},
-		{"", "", "", "", "", "", "", "", "", ""},
-		{"", "", "", "", "", "", "", "f", "", ""},
-		{"", "", "", "", "", "", "", "", "", ""},
-		{"", "", "", "", "", "", "", "", "", ""},
-		{"", "", "", "", "", "sh", "", "", "", ""},
-		{"", "", "", "", "", "", "", "", "", ""},
-		{"", "", "", "", "", "", "", "", "", ""},
-		{"", "", "", "", "", "", "", "", "", ""},
-	}
+	r := s.BoardInfo.Size.Rows
+	c := s.BoardInfo.Size.Columns
+	b := s.BoardInfo.Board
 
 	// Render top border
 	fmt.Printf("%c", '┏')
-	for i := 0; i < len(sb); i++ {
+	for i := 0; i < c; i++ {
 		fmt.Printf("%c", '━')
 	}
 	fmt.Printf("%c\n", '┓')
 
 	// Render vertical borders and snake
-	for i := 0; i < len(sb); i++ {
+	for i := 0; i < r; i++ {
 		fmt.Printf("%c", '┃')
-		for j := 0; j < len(sb[0]); j++ {
-			switch sb[i][j] {
+		for j := 0; j < c; j++ {
+			switch b[i][j] {
 			case "sh":
 				fmt.Printf("%c", '◯')
 			case "sb":
@@ -44,16 +35,15 @@ func (s *SnakeGame) RenderBoard() {
 
 	// Render bottom border
 	fmt.Printf("%c", '┗')
-	for i := 0; i < len(sb); i++ {
+	for i := 0; i < c; i++ {
 		fmt.Printf("%c", '━')
 	}
 	fmt.Printf("%c\n", '┛')
 
+	s.RenderGameInfo()
 }
 
 // RenderGameInfo renders round and score info about a snake game
-func RenderGameInfo() {
-	s := 0
-	r := 1
-	fmt.Printf("Round: %v	Score: %v\n", r, s)
+func (s *SnakeGame) RenderGameInfo() {
+	fmt.Printf("Round: %v	Score: %v\n", s.CurrentRound, s.Score)
 }

@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"fmt"
+	"os"
 )
 
 // NewGame returns a pointer to a new game
@@ -13,6 +14,12 @@ func (b *BoardInfo) NewGame() error {
 		GameOver:     false,
 	}
 
+	// Set food position
+	sg.SetFood(sg.BoardInfo.FoodPos)
+
+	// Set snake head position
+	sg.SetSnake()
+
 	if err := sg.SetGameState(); err != nil {
 		return err
 	}
@@ -20,4 +27,47 @@ func (b *BoardInfo) NewGame() error {
 	fmt.Printf("Created new cli-snake game with board size of %v rows and %v colums.\n", b.Size.Rows, b.Size.Columns)
 
 	return nil
+}
+
+// SetFood maps the position of the food to the game board
+func (s *SnakeGame) SetFood(p Position) {
+	s.BoardInfo.Board[p.Row][p.Column] = "f"
+}
+
+// SetSnake maps the position of the snake to the game board
+func (s *SnakeGame) SetSnake() {
+	sn := s.BoardInfo.Snake
+	for i := range sn.Body {
+		// Set snake head
+		if i != 0 {
+			s.BoardInfo.Board[sn.Body[i].Row][sn.Body[i].Column] = "sb"
+		} else {
+			s.BoardInfo.Board[sn.Body[i].Row][sn.Body[i].Column] = "sh"
+		}
+	}
+}
+
+// CheckGameOver ends the game
+func (s *SnakeGame) CheckGameOver() {
+	// Check whether snake passes horizontal borders
+	if (s.BoardInfo.Snake.Body[0].Row < 0) || (s.BoardInfo.Snake.Body[0].Row == s.BoardInfo.Size.Rows) {
+		s.GameOver = true
+	}
+	// Check whether snake passes vertical borders
+	if (s.BoardInfo.Snake.Body[0].Column < 0) || (s.BoardInfo.Snake.Body[0].Column == s.BoardInfo.Size.Columns) {
+		s.GameOver = true
+	}
+
+	// Check whether snake head touches snake body
+	for i := 1; i < len(s.BoardInfo.Snake.Body); i++ {
+		if s.BoardInfo.Snake.Body[0] == s.BoardInfo.Snake.Body[i] {
+			s.GameOver = true
+		}
+	}
+
+	if s.GameOver == true {
+		fmt.Println("GAME OVER!")
+		fmt.Println("Score: ", s.Score)
+		os.Remove("./gamestate.json")
+	}
 }
