@@ -30,7 +30,21 @@ func main() {
 				if err != nil {
 					return err
 				}
-				fmt.Println("Snakegame: ", bi.NewGame())
+				if err := bi.NewGame(); err != nil {
+					return err
+				}
+				return nil
+			},
+		},
+		{
+			Name:  "info",
+			Usage: "Displays current game info",
+			Action: func(c *cli.Context) error {
+				sg, err := pkg.GetGameState()
+				if err != nil {
+					return err
+				}
+				fmt.Println("Saved game: ", sg)
 				return nil
 			},
 		},

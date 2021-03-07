@@ -3,14 +3,23 @@ package pkg
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 )
 
 // SetGameState saves the current game state as json encoded environment variable
-func (s *SnakeGame) SetGameState() {
-	bytes, _ := json.Marshal(s)
+func (s *SnakeGame) SetGameState() error {
+	bytes, err := json.Marshal(s)
+	if err != nil {
+		return err
+	}
 	jsonStr := string(bytes)
-	os.Setenv("CLISNAKE_GAME", jsonStr)
+	fmt.Println(jsonStr)
+	if err := os.Setenv("CLISNAKE_GAME", jsonStr); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // GetGameState gets the current game state from the "CLISNAKE_GAME" environment variable
@@ -18,7 +27,7 @@ func GetGameState() (*SnakeGame, error) {
 	var sg SnakeGame
 	g, err := os.LookupEnv("CLISNAKE_GAME")
 	if err == false {
-		return &SnakeGame{}, errors.New("no saved current game")
+		return &SnakeGame{}, errors.New("no saved game data available")
 	}
 
 	if err := json.Unmarshal([]byte(g), &sg); err != nil {
