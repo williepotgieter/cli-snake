@@ -69,23 +69,22 @@ func (s *SnakeGame) SetSnake() {
 	}
 
 	s.BoardInfo.Board = b
-	fmt.Println("New board: ", b)
 }
 
 // CheckGameOver ends the game
 func (s *SnakeGame) CheckGameOver(p Position) {
 	// Check whether snake passes horizontal borders
-	if (p.Row < 0) || (p.Row == s.BoardInfo.Size.Rows) {
+	if (p.Row < 0) || (p.Row >= s.BoardInfo.Size.Rows) {
 		s.GameOver = true
 	}
 	// Check whether snake passes vertical borders
-	if (p.Column < 0) || (p.Column == s.BoardInfo.Size.Columns) {
+	if (p.Column < 0) || (p.Column >= s.BoardInfo.Size.Columns) {
 		s.GameOver = true
 	}
 
 	// Check whether snake head touches snake body
-	for i := 1; i < len(s.BoardInfo.Snake.Body); i++ {
-		if s.BoardInfo.Snake.Body[0] == s.BoardInfo.Snake.Body[i] {
+	if len(s.BoardInfo.Snake.Body) > 1 {
+		if HasPosition(s.BoardInfo.Snake.Body[1:], s.BoardInfo.Snake.Body[0]) == true {
 			s.GameOver = true
 		}
 	}
@@ -101,7 +100,6 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 		nb = append(nb, sb...)
 
 		s.BoardInfo.Snake.Body = nb
-		fmt.Println("New snake body: ", s.BoardInfo.Snake.Body)
 
 		pos := Position{
 			Row:    RealRandom(s.BoardInfo.Size.Rows),
@@ -128,7 +126,6 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 	//nb = append(nb, sb...)
 
 	s.BoardInfo.Snake.Body = nb
-	fmt.Println("New snake body: ", s.BoardInfo.Snake.Body)
 
 	s.SetSnake()
 
