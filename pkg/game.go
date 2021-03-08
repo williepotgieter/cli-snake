@@ -40,24 +40,36 @@ func (s *SnakeGame) SetFood(p Position) {
 // SetSnake maps the position of the snake to the game board
 func (s *SnakeGame) SetSnake() {
 	sn := s.BoardInfo.Snake
+	b := s.BoardInfo.Board
+	var bp Position
 
 	// Clear existing snake
 	for i := 0; i < s.BoardInfo.Size.Rows; i++ {
 		for j := 0; j < s.BoardInfo.Size.Columns; j++ {
-			if s.BoardInfo.Board[i][j] != "f" {
-				s.BoardInfo.Board[i][j] = ""
-			}
+			b[i][j] = ""
 		}
 	}
 
-	// Set updated snake
-	for i := range sn.Body {
-		if i == 0 {
-			s.BoardInfo.Board[sn.Body[i].Row][sn.Body[i].Column] = "sh"
-		} else {
-			s.BoardInfo.Board[sn.Body[i].Row][sn.Body[i].Column] = "sb"
+	for i := 0; i < s.BoardInfo.Size.Rows; i++ {
+		for j := 0; j < s.BoardInfo.Size.Columns; j++ {
+			bp = Position{
+				Row:    i,
+				Column: j,
+			}
+
+			if bp == sn.Body[0] {
+				b[i][j] = "sh"
+			} else if HasPosition(sn.Body, bp) == true {
+				b[i][j] = "sb"
+			} else if bp == s.BoardInfo.FoodPos {
+				b[i][j] = "f"
+			}
+
 		}
 	}
+
+	s.BoardInfo.Board = b
+	fmt.Println("New board: ", b)
 }
 
 // CheckGameOver ends the game
@@ -81,9 +93,14 @@ func (s *SnakeGame) CheckGameOver(p Position) {
 
 // CheckFoundFood checks whether the snake has found food and adds length to the snake
 func (s *SnakeGame) CheckFoundFood(np Position) error {
+	sb := s.BoardInfo.Snake.Body
+	nb := []Position{np}
 
 	if np == s.BoardInfo.FoodPos {
-		s.BoardInfo.Snake.Body = append([]Position{np}, s.BoardInfo.Snake.Body...)
+
+		nb = append(nb, sb...)
+
+		s.BoardInfo.Snake.Body = nb
 		fmt.Println("New snake body: ", s.BoardInfo.Snake.Body)
 
 		pos := Position{
@@ -103,14 +120,21 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 		s.Score++
 
 	} else {
-		s.BoardInfo.Snake.Body = []Position{np}
+		// Move snake body here
+		nb = append(nb, sb...)
+		nb = nb[:len(nb)-1]
 	}
+
+	//nb = append(nb, sb...)
+
+	s.BoardInfo.Snake.Body = nb
+	fmt.Println("New snake body: ", s.BoardInfo.Snake.Body)
+
+	s.SetSnake()
 
 	if err := s.SetGameState(); err != nil {
 		return err
 	}
-
-	s.SetSnake()
 
 	return nil
 }
@@ -132,8 +156,4 @@ func (s *SnakeGame) MoveNext(np Position) {
 
 	// Check if next pos is food
 	s.CheckFoundFood(np)
-
-	// TODO - Implement logic to move snake
-
-	s.SetSnake()
 }
