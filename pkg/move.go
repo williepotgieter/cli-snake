@@ -1,23 +1,45 @@
 package pkg
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+	"strings"
 
-// MoveUp moves the snake head one position up
-func (s *SnakeGame) MoveUp() {
+	"github.com/urfave/cli/v2"
+)
+
+// MoveSnake moves the snake head one position
+func (s *SnakeGame) MoveSnake(c *cli.Context) error {
+	move := strings.ToLower(c.String("move"))
+
+	switch move {
+	case "up":
+		s.moveUp()
+	case "down":
+		s.moveDown()
+	case "left":
+		s.moveLeft()
+	case "right":
+		s.moveRight()
+	default:
+		return errors.New("invalid move. enter only up, down, left or right")
+	}
+
+	return nil
+}
+
+func (s *SnakeGame) moveUp() {
 	fmt.Println("Moved up!")
 }
 
-// MoveDown moves the snake head one position down
-func (s *SnakeGame) MoveDown() {
+func (s *SnakeGame) moveDown() {
 	fmt.Println("Moved down!")
 }
 
-// MoveLeft moves the snake head one position left
-func (s *SnakeGame) MoveLeft() {
+func (s *SnakeGame) moveLeft() {
 	fmt.Println("Moved left!")
 }
 
-// MoveRight moves the snake head one position right
-func (s *SnakeGame) MoveRight() {
+func (s *SnakeGame) moveRight() {
 	fmt.Println("Moved right!")
 }

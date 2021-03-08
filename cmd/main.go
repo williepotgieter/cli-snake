@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"os"
 
@@ -20,8 +21,10 @@ func main() {
 			Usage: "Creates a new game.",
 			Flags: []cli.Flag{
 				&cli.StringFlag{
-					Name:  "size",
-					Usage: "set board size for new game",
+					Name:        "size",
+					Usage:       "set board size for new game",
+					Value:       "10x22",
+					DefaultText: "10x22",
 				},
 			},
 			Action: func(c *cli.Context) error {
@@ -37,14 +40,36 @@ func main() {
 		},
 		{
 			Name:  "info",
-			Usage: "Displays current game info",
+			Usage: "displays current game info",
 			Action: func(c *cli.Context) error {
 				sg, err := pkg.GetGameState()
 				if err != nil {
 					return err
 				}
-				//fmt.Println("Saved game: ", *sg)
 				sg.RenderBoard()
+				return nil
+			},
+		},
+		{
+			Name:  "play",
+			Usage: "Creates a new game.",
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:     "move",
+					Usage:    "moves snake head one position (up, down, left or right)",
+					Required: true,
+				},
+			},
+			Action: func(c *cli.Context) error {
+				sg, err := pkg.GetGameState()
+				if err != nil {
+					return errors.New("could not load game state. make sure to create a new game before running this command")
+				}
+
+				if err := sg.MoveSnake(c); err != nil {
+					return err
+				}
+
 				return nil
 			},
 		},
