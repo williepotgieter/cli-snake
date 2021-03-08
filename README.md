@@ -10,26 +10,26 @@ For simplicity, the project used the [urfave](https://github.com/urfave/cli) lib
 # Usage
 ### Build (OSX/Linux)
 Navigate to the root directory of the project and run the following command:
-```make build```
+- ```make build```
 A binary will be built and output into the ```./bin``` folder
 
 The binary can be run by navigating into the ```./bin``` directory and running the following command:
-```./clisnake -h```
+- ```./clisnake -h```
 
 ### Compile only
 Navigate to the root directory of the project and run the following command:
-```go run cmd/main.go -h```
+- ```go run cmd/main.go -h```
 
 # Gameplay
 All the commands for playing the game can be viewed by running the built-in CLI help with either of the two commands described in **Usage** above.
 
 ### Starting a new game
 Navigate to the project's root directory and run the following command to start a new game:
-```go run cmd/main.go newgame```
+- ```go run cmd/main.go newgame```
 _This wil start a new game with a default board size of **10 rows and 22 columns**._
 
 To start a new game with a custom board size, enter the following command:
-```go run cmd/main.go newgame --size 15x30```
+- ```go run cmd/main.go newgame --size 15x30```
 _This wil start a new game with a board size of **15 rows and 30 columns**._
 
 ### Playing a game
@@ -50,7 +50,7 @@ The game will end automatically if one of the following conditions are met.
 
 ### Ending a game
 A game can be manually ended by entering the following command:
-```go run cmd/main.go endgame```
+- ```go run cmd/main.go endgame```
 
 # Known issues
 The game does not enter "game over" mode when a snake is of length 1 and the user moves the snakes head onto its body.
