@@ -83,6 +83,7 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 
 	if np == s.BoardInfo.FoodPos {
 		s.BoardInfo.Snake.Body = append([]Position{np}, s.BoardInfo.Snake.Body...)
+		fmt.Println("New snake body: ", s.BoardInfo.Snake.Body)
 
 		pos := Position{
 			Row:    RealRandom(s.BoardInfo.Size.Rows),
@@ -96,14 +97,17 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 			}
 		}
 
-		s.BoardInfo.FoodPos = pos
+		s.SetFood(pos)
+		//s.BoardInfo.FoodPos = pos
 
 		s.Score++
-		if err := s.SetGameState(); err != nil {
-			return err
-		}
+
 	} else {
 		s.BoardInfo.Snake.Body = []Position{np}
+	}
+
+	if err := s.SetGameState(); err != nil {
+		return err
 	}
 
 	s.SetSnake()
@@ -127,11 +131,9 @@ func (s *SnakeGame) MoveNext(np Position) {
 	}
 
 	// Check if next pos is food
-	if np == s.BoardInfo.FoodPos {
-		s.BoardInfo.Snake.Body = append([]Position{np}, s.BoardInfo.Snake.Body...)
-	} else {
-		s.BoardInfo.Snake.Body = []Position{np}
-	}
+	s.CheckFoundFood(np)
+
+	// TODO - Implement logic to move snake
 
 	s.SetSnake()
 }

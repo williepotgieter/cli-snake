@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 
 	"github.com/urfave/cli/v2"
@@ -40,33 +39,48 @@ func (s *SnakeGame) moveUp() {
 	}
 
 	s.makeMove(nextPos)
-
-	// s.CheckGameOver(nextPos)
-
-	// if s.GameOver == true {
-	// 	s.EndGame()
-	// 	return
-	// }
-
-	// s.CheckFoundFood(nextPos)
-
-	// s.CurrentRound++
-
-	// s.SetGameState()
-
-	// s.RenderBoard()
 }
 
 func (s *SnakeGame) moveDown() {
-	fmt.Println("Moved left!")
+	currentPos := Position{
+		Row:    s.BoardInfo.Snake.Body[0].Row,
+		Column: s.BoardInfo.Snake.Body[0].Column,
+	}
+
+	nextPos := Position{
+		Row:    currentPos.Row + 1,
+		Column: currentPos.Column,
+	}
+
+	s.makeMove(nextPos)
 }
 
 func (s *SnakeGame) moveLeft() {
-	fmt.Println("Moved left!")
+	currentPos := Position{
+		Row:    s.BoardInfo.Snake.Body[0].Row,
+		Column: s.BoardInfo.Snake.Body[0].Column,
+	}
+
+	nextPos := Position{
+		Row:    currentPos.Row,
+		Column: currentPos.Column - 1,
+	}
+
+	s.makeMove(nextPos)
 }
 
 func (s *SnakeGame) moveRight() {
-	fmt.Println("Moved right!")
+	currentPos := Position{
+		Row:    s.BoardInfo.Snake.Body[0].Row,
+		Column: s.BoardInfo.Snake.Body[0].Column,
+	}
+
+	nextPos := Position{
+		Row:    currentPos.Row,
+		Column: currentPos.Column + 1,
+	}
+
+	s.makeMove(nextPos)
 }
 
 func (s *SnakeGame) makeMove(np Position) {
