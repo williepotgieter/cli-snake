@@ -35,10 +35,10 @@ _This wil start a new game with a board size of **15 rows and 30 columns**._
 ### Playing a game
 Once a new game has been started, the snake's head will be displayed on the board by a **◯** and food will be displayed by a ◈. The snake's head can then be moved towards the food (one position at a time) by entering the following commands:
 
-Move snake head up => ```go run cmd/main.go play --move up```
-Move snake head down => ```go run cmd/main.go play --move down```
-Move snake head left => ```go run cmd/main.go play --move left```
-Move snake head right => ```go run cmd/main.go play --move right```
+- Move snake head up => ```go run cmd/main.go play --move up```
+- Move snake head down => ```go run cmd/main.go play --move down```
+- Move snake head left => ```go run cmd/main.go play --move left```
+- Move snake head right => ```go run cmd/main.go play --move right```
 
 Once a game has been started (and is in progress), the game can be rendered at any time by entering the following command:
 ```go run cmd/main.go info```
