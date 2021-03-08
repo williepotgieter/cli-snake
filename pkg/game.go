@@ -33,6 +33,7 @@ func (b *BoardInfo) NewGame() error {
 
 // SetFood maps the position of the food to the game board
 func (s *SnakeGame) SetFood(p Position) {
+	s.BoardInfo.FoodPos = p
 	s.BoardInfo.Board[p.Row][p.Column] = "f"
 }
 
@@ -98,7 +99,6 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 		}
 
 		s.SetFood(pos)
-		//s.BoardInfo.FoodPos = pos
 
 		s.Score++
 
