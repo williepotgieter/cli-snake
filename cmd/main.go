@@ -40,7 +40,7 @@ func main() {
 		},
 		{
 			Name:  "info",
-			Usage: "displays current game info",
+			Usage: "Displays current game info",
 			Action: func(c *cli.Context) error {
 				sg, err := pkg.GetGameState()
 				if err != nil {
@@ -52,7 +52,7 @@ func main() {
 		},
 		{
 			Name:  "play",
-			Usage: "Creates a new game.",
+			Usage: "Play the game.",
 			Flags: []cli.Flag{
 				&cli.StringFlag{
 					Name:     "move",
@@ -67,6 +67,22 @@ func main() {
 				}
 
 				if err := sg.MoveSnake(c); err != nil {
+					return err
+				}
+
+				return nil
+			},
+		},
+		{
+			Name:  "endgame",
+			Usage: "Ends current came adn removes temporary data file",
+			Action: func(c *cli.Context) error {
+				sg, err := pkg.GetGameState()
+				if err != nil {
+					return err
+				}
+
+				if err := sg.EndGame(); err != nil {
 					return err
 				}
 

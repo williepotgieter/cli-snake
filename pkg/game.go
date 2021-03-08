@@ -138,10 +138,14 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 }
 
 // EndGame ends the current came and removes temporary game state directory
-func (s *SnakeGame) EndGame() {
+func (s *SnakeGame) EndGame() error {
 	fmt.Println("GAME OVER!")
 	fmt.Println("Score: ", s.Score)
-	os.Remove("temp/gamestate.json")
+	if err := os.Remove("temp/gamestate.json"); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // MoveNext moves the snake's head to the next position

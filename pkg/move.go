@@ -13,13 +13,21 @@ func (s *SnakeGame) MoveSnake(c *cli.Context) error {
 
 	switch move {
 	case "up":
-		s.moveUp()
+		if err := s.moveUp(); err != nil {
+			return err
+		}
 	case "down":
-		s.moveDown()
+		if err := s.moveDown(); err != nil {
+			return err
+		}
 	case "left":
-		s.moveLeft()
+		if err := s.moveLeft(); err != nil {
+			return err
+		}
 	case "right":
-		s.moveRight()
+		if err := s.moveRight(); err != nil {
+			return err
+		}
 	default:
 		return errors.New("invalid move. enter only up, down, left or right")
 	}
@@ -27,7 +35,7 @@ func (s *SnakeGame) MoveSnake(c *cli.Context) error {
 	return nil
 }
 
-func (s *SnakeGame) moveUp() {
+func (s *SnakeGame) moveUp() error {
 	currentPos := Position{
 		Row:    s.BoardInfo.Snake.Body[0].Row,
 		Column: s.BoardInfo.Snake.Body[0].Column,
@@ -38,10 +46,14 @@ func (s *SnakeGame) moveUp() {
 		Column: currentPos.Column,
 	}
 
-	s.makeMove(nextPos)
+	if err := s.makeMove(nextPos); err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (s *SnakeGame) moveDown() {
+func (s *SnakeGame) moveDown() error {
 	currentPos := Position{
 		Row:    s.BoardInfo.Snake.Body[0].Row,
 		Column: s.BoardInfo.Snake.Body[0].Column,
@@ -52,10 +64,14 @@ func (s *SnakeGame) moveDown() {
 		Column: currentPos.Column,
 	}
 
-	s.makeMove(nextPos)
+	if err := s.makeMove(nextPos); err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (s *SnakeGame) moveLeft() {
+func (s *SnakeGame) moveLeft() error {
 	currentPos := Position{
 		Row:    s.BoardInfo.Snake.Body[0].Row,
 		Column: s.BoardInfo.Snake.Body[0].Column,
@@ -66,10 +82,14 @@ func (s *SnakeGame) moveLeft() {
 		Column: currentPos.Column - 1,
 	}
 
-	s.makeMove(nextPos)
+	if err := s.makeMove(nextPos); err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (s *SnakeGame) moveRight() {
+func (s *SnakeGame) moveRight() error {
 	currentPos := Position{
 		Row:    s.BoardInfo.Snake.Body[0].Row,
 		Column: s.BoardInfo.Snake.Body[0].Column,
@@ -80,16 +100,22 @@ func (s *SnakeGame) moveRight() {
 		Column: currentPos.Column + 1,
 	}
 
-	s.makeMove(nextPos)
+	if err := s.makeMove(nextPos); err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func (s *SnakeGame) makeMove(np Position) {
+func (s *SnakeGame) makeMove(np Position) error {
 	s.MoveNext(np)
 	s.CheckGameOver(np)
 
 	if s.GameOver == true {
-		s.EndGame()
-		return
+		if err := s.EndGame(); err != nil {
+			return err
+		}
+		return nil
 	}
 
 	//s.MoveNext(np)
@@ -99,4 +125,5 @@ func (s *SnakeGame) makeMove(np Position) {
 	s.SetGameState()
 
 	s.RenderBoard()
+	return nil
 }
