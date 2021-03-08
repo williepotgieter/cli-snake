@@ -29,11 +29,36 @@ func (s *SnakeGame) MoveSnake(c *cli.Context) error {
 }
 
 func (s *SnakeGame) moveUp() {
-	fmt.Println("Moved up!")
+	currentPos := Position{
+		Row:    s.BoardInfo.Snake.Body[0].Row,
+		Column: s.BoardInfo.Snake.Body[0].Column,
+	}
+
+	nextPos := Position{
+		Row:    currentPos.Row - 1,
+		Column: currentPos.Column,
+	}
+
+	s.makeMove(nextPos)
+
+	// s.CheckGameOver(nextPos)
+
+	// if s.GameOver == true {
+	// 	s.EndGame()
+	// 	return
+	// }
+
+	// s.CheckFoundFood(nextPos)
+
+	// s.CurrentRound++
+
+	// s.SetGameState()
+
+	// s.RenderBoard()
 }
 
 func (s *SnakeGame) moveDown() {
-	fmt.Println("Moved down!")
+	fmt.Println("Moved left!")
 }
 
 func (s *SnakeGame) moveLeft() {
@@ -42,4 +67,21 @@ func (s *SnakeGame) moveLeft() {
 
 func (s *SnakeGame) moveRight() {
 	fmt.Println("Moved right!")
+}
+
+func (s *SnakeGame) makeMove(np Position) {
+	s.CheckGameOver(np)
+
+	if s.GameOver == true {
+		s.EndGame()
+		return
+	}
+
+	s.MoveNext(np)
+
+	s.CurrentRound++
+
+	s.SetGameState()
+
+	s.RenderBoard()
 }

@@ -19,21 +19,21 @@ func CreateBoard(c *cli.Context) (BoardInfo, error) {
 
 	// Generate random food position
 	fp := Position{
-		Row:    realRandom(bs.Rows),
-		Column: realRandom(bs.Columns),
+		Row:    RealRandom(bs.Rows),
+		Column: RealRandom(bs.Columns),
 	}
 
 	// Generate random position for snake's head
 	sh := Position{
-		Row:    realRandom(bs.Rows),
-		Column: realRandom(bs.Columns),
+		Row:    RealRandom(bs.Rows),
+		Column: RealRandom(bs.Columns),
 	}
 
 	// Ensure that snake head position and food position is different
 	for sh == fp {
 		sh = Position{
-			Row:    realRandom(bs.Rows),
-			Column: realRandom(bs.Columns),
+			Row:    RealRandom(bs.Rows),
+			Column: RealRandom(bs.Columns),
 		}
 	}
 
