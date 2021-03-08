@@ -68,7 +68,7 @@ func (s *SnakeGame) CheckGameOver() {
 	if s.GameOver == true {
 		fmt.Println("GAME OVER!")
 		fmt.Println("Score: ", s.Score)
-		os.Remove("./gamestate.json")
+		os.Remove("temp/gamestate.json")
 		return
 	}
 }
@@ -78,11 +78,20 @@ func (s *SnakeGame) CheckFoundFood() error {
 	if s.BoardInfo.Snake.Body[0] == s.BoardInfo.FoodPos {
 		s.BoardInfo.Snake.Body = append([]Position{s.BoardInfo.FoodPos}, s.BoardInfo.Snake.Body...)
 		s.SetSnake()
-		s.BoardInfo.FoodPos = Position{
+		pos := Position{
 			Row:    realRandom(s.BoardInfo.Size.Rows),
 			Column: realRandom(s.BoardInfo.Size.Columns),
 		}
-		// TODO - Check whether food position falls on snake body
+		// Check whether food position falls on snake body
+		for hasPosition(s.BoardInfo.Snake.Body, pos) == true {
+			pos = Position{
+				Row:    realRandom(s.BoardInfo.Size.Rows),
+				Column: realRandom(s.BoardInfo.Size.Columns),
+			}
+		}
+
+		s.BoardInfo.FoodPos = pos
+
 		s.Score++
 		if err := s.SetGameState(); err != nil {
 			return err
@@ -90,4 +99,14 @@ func (s *SnakeGame) CheckFoundFood() error {
 	}
 
 	return nil
+}
+
+func hasPosition(b []Position, p Position) bool {
+	for _, pos := range b {
+		if pos == p {
+			return true
+		}
+	}
+
+	return false
 }
