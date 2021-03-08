@@ -84,10 +84,13 @@ func (s *SnakeGame) CheckGameOver(p Position) {
 
 	// Check whether snake head touches snake body
 	if len(s.BoardInfo.Snake.Body) > 1 {
-		if HasPosition(s.BoardInfo.Snake.Body[1:], s.BoardInfo.Snake.Body[0]) == true {
+		sh := s.BoardInfo.Snake.Body[0]
+		sb := s.BoardInfo.Snake.Body[1:]
+		if HasPosition(sb, sh) == true {
 			s.GameOver = true
 		}
 	}
+
 }
 
 // CheckFoundFood checks whether the snake has found food and adds length to the snake
@@ -123,8 +126,6 @@ func (s *SnakeGame) CheckFoundFood(np Position) error {
 		nb = nb[:len(nb)-1]
 	}
 
-	//nb = append(nb, sb...)
-
 	s.BoardInfo.Snake.Body = nb
 
 	s.SetSnake()
@@ -147,9 +148,9 @@ func (s *SnakeGame) EndGame() {
 func (s *SnakeGame) MoveNext(np Position) {
 	// Check if game over
 	s.CheckGameOver(np)
-	if s.GameOver == true {
-		s.EndGame()
-	}
+	// if s.GameOver == true {
+	// 	s.EndGame()
+	// }
 
 	// Check if next pos is food
 	s.CheckFoundFood(np)

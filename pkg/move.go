@@ -84,6 +84,7 @@ func (s *SnakeGame) moveRight() {
 }
 
 func (s *SnakeGame) makeMove(np Position) {
+	s.MoveNext(np)
 	s.CheckGameOver(np)
 
 	if s.GameOver == true {
@@ -91,7 +92,7 @@ func (s *SnakeGame) makeMove(np Position) {
 		return
 	}
 
-	s.MoveNext(np)
+	//s.MoveNext(np)
 
 	s.CurrentRound++
 
